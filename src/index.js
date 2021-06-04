@@ -2,11 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Country from './Country';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Switch>
+        <Route path="/" exact component={App} />
+        <Route path="/covid/country:country" exact component={Country} />
+      </Switch>
+    </Router>
+    {/* <App /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
