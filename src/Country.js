@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import MaterialTable from 'material-table';
+import { useSelector } from 'react-redux';
 
 const columns = [
   { field: 'date', title: 'Date' },
@@ -37,10 +38,10 @@ function Country() {
 
   const [globalData, setGlobalData] = useState({});
   const [lastesData, setLastesData] = useState([]);
-
+  let countryName = useSelector((state) => state.country_reducer.countryName);
   useEffect(() => {
-    const country = getCountry();
-    const globalApi = "https://covidapi.info/api/v1/country/" + country + "/latest";
+    if (countryName === "") countryName = getCountry();
+    const globalApi = "https://covidapi.info/api/v1/country/" + countryName + "/latest";
     axios.get(globalApi).then(response => {
       const key = Object.keys(response.data.result)[0];
       const lastesData = response.data.result[key];
@@ -48,7 +49,7 @@ function Country() {
       setGlobalData(lastesData)
     });
 
-    axios.get("https://covidapi.info/api/v1/country/" + country).then(resLatest => {
+    axios.get("https://covidapi.info/api/v1/country/" + countryName).then(resLatest => {
       // console.log(Object.keys(resLatest.data.result))
       let newFormedArray = Object.keys(resLatest.data.result).map((item, index) => {
         let arr = resLatest.data.result[item];
@@ -58,18 +59,17 @@ function Country() {
       setLastesData(newFormedArray);
     });
 
-  }, []);
+  }, [countryName]);
 
   const classes = useStyles();
 
   const getCountry = () => {
-    // return (window.location.pathname);
     return window.location.pathname.match(/country=([^/]+)/)[1];
   }
   return (
     <>
       <div className="centerContent">
-      <Card className={classes.root + " card-b-color"}>
+        <Card className={classes.root + " card-b-color"}>
           <CardContent>
             {globalData.confirmed ?
               <>

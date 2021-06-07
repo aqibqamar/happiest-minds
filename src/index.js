@@ -5,15 +5,20 @@ import App from './App';
 import Country from './Country';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./Store";
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Switch>
-        <Route path="/" exact component={App} />
-        <Route path="/covid/country:country" exact component={Country} />
-      </Switch>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route path="/" exact component={App} />
+          <Route path="/covid/country:country" exact component={Country} />
+        </Switch>
+      </Router>
+    </Provider>
     {/* <App /> */}
   </React.StrictMode>,
   document.getElementById('root')
